@@ -31,28 +31,33 @@ markComplete = (id) => {
   })
 }
 
-//delete todo
-//filter method
-//loops through the array, and based on the condition, return another array
-//return todos that don't match the id we passed in
 
-//pass in state object
-//spread the array of todos in the state object, then filter thhrough them , 
-//to filter out the ones that  have the same id as the one you're passing in
-//thus deleting it from the array
 delTodo = (id) =>{
-  this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)]});
+Axios.delete(`http://jsonplaceholder.typicode.com/todos/${id} `)
+  .then (res => this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)]})
+)}
+
+// delTodo = (id) => {
+//   axios
+//     .delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+//     .then((res) =>
+//       this.setState({
+//         todos: [...this.state.todos.filter((todo) => todo.id !== id)]
+//       })
+//     );
+// };
+
+
+
+
+addTodo = (title) => {
+  Axios.post('http://jsonplaceholder.typicode.com/todos', { title: title, completed: false })
+    .then((res) => {
+      res.data.id = uuid.v4();
+      this.setState({ todos: [...this.state.todos, res.data] });
+    });
 }
 
-//addtodo
-addTodo = (title) => {
-  const newTodo = {
-    id: uuid.v4(), 
-    title: title, 
-    completed: false,
-  }
-  this.setState({ todos: [...this.state.todos, newTodo]})
-}
 
 render() {
 return (
